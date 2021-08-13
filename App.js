@@ -7,86 +7,42 @@ import {
   KeyboardAvoidingView,
   NativeModules,
   Text,
-  Share,
 } from 'react-native';
+
+import TrackingConfig from './src/components/TrackingConfig';
+
+import {NavigationContainer} from '@react-navigation/native';
+
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 const {SharedPrefModule, TrackingModule} = NativeModules;
 
 const sharedPrefText = SharedPrefModule.getFromSharedPref('KEY_TEXT');
 
-console.log(`Device ID: ${sharedPrefText}`);
+// console.log(`Device ID: ${sharedPrefText}`);
 
 export default App = () => {
-  const [text, setText] = useState('');
-  const [frequency, setFrequency] = useState('');
   return (
-    <View style={styles.container}>
-      <KeyboardAvoidingView>
-        <Text style={styles.text}>DEVICE ID</Text>
-        <TextInput
-          style={styles.input}
-          value={text}
-          onChangeText={text => {
-            setText(text);
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#44A048',
+          },
+        }}>
+        <Stack.Screen
+          name="TrackingConfig"
+          component={TrackingConfig}
+          options={{
+            headerTitle: props => (
+              <Text style={{color: '#fff', fontSize: 20}}>Traccar Client</Text>
+            ),
+            headerRight: () => <Text style={{color: '#fff'}}>STATUS</Text>,
           }}
         />
-        <Text style={styles.text}>FREQUENCY</Text>
-        <TextInput
-          style={styles.input}
-          value={frequency}
-          onChangeText={text => {
-            setFrequency(text);
-          }}
-        />
-        <Button
-          title="Save me!"
-          style={styles.button}
-          onPress={() => {
-            setText('');
-            setFrequency('');
-            console.log(text);
-            console.log(frequency);
-            SharedPrefModule.saveToSharedPref('id', text);
-            SharedPrefModule.saveToSharedPref('interval', frequency);
-          }}
-        />
-        <Button
-          style={styles.button}
-          title="Start service"
-          onPress={() => {
-            TrackingModule.startService();
-          }}
-        />
-        <Button
-          style={styles.button}
-          title="Stop service"
-          onPress={() => {
-            TrackingModule.stopService();
-          }}
-        />
-      </KeyboardAvoidingView>
-    </View>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  input: {
-    height: 40,
-    width: 300,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-  text: {
-    height: 40,
-    width: 300,
-    textAlign: 'center',
-  },
-  button: {
-    margin: 10,
-  },
-});
