@@ -1,12 +1,9 @@
 import React, {useState} from 'react';
 import {
-  TextInput,
-  Button,
   View,
   StyleSheet,
   KeyboardAvoidingView,
   NativeModules,
-  Text,
   Switch,
 } from 'react-native';
 
@@ -26,6 +23,23 @@ export default TrackingConfig = () => {
   const [modalText, onTextChange] = useState('');
   const [modalTitle, setModalTitle] = useState('');
 
+  const DEVICE_IDENTIFIER = 'Device Identifier';
+  const DEVICE_IDENTIFIER_SUB = Math.floor(Math.random() * 900000) + 100000;
+  const SERVER_URL = 'Server URL';
+  const SERVER_URL_SUB = 'Tracking server URL';
+  const LOCATION_ACCURACY = 'Location accuracy';
+  const LOCATION_ACCURACY_SUB = 'Desired location accuracy';
+  const FREQUENCY = 'Frequency';
+  const FREQUENCY_SUB = 'Reporting interval in seconds';
+  const DISTANCE = 'Distance';
+  const DISTANCE_SUB = 'Reporting distance in meters';
+  const ANGLE = 'Angle';
+  const ANGLE_SUB = 'Reporting angle in degrees';
+  const OFFLINE_BUFFERING = 'Offline buffering';
+  const OFFLINE_BUFFERING_SUB = 'Buffering on';
+  const WAKE_LOCK = 'Wake lock';
+  const WAKE_LOCK_SUB = 'Wake lock on';
+
   return (
     <View style={styles.container}>
       <ConfigItem
@@ -34,63 +48,72 @@ export default TrackingConfig = () => {
         disabled={true}>
         <Switch />
       </ConfigItem>
+
       <ConfigItem
-        title="Device Identifier"
-        subtitle={Math.floor(Math.random() * 900000) + 100000}
+        title={DEVICE_IDENTIFIER}
+        subtitle={DEVICE_IDENTIFIER_SUB}
         onPress={() => {
-          setModalTitle('Device Identifier');
+          setModalTitle(DEVICE_IDENTIFIER);
           setModalVisible(true);
         }}
       />
+
       <ConfigItem
-        title="Server URL"
-        subtitle="Tracking server URL"
+        title={SERVER_URL}
+        subtitle={SERVER_URL_SUB}
         onPress={() => {
-          setModalTitle('Server URL');
+          setModalTitle(SERVER_URL);
           setModalVisible(true);
         }}
       />
+
       <ConfigItem
-        title="Location accuracy"
-        subtitle="Desired location accuracy"
+        title={LOCATION_ACCURACY}
+        subtitle={LOCATION_ACCURACY_SUB}
         onPress={() => {
-          setModalTitle('Location accuracy');
+          setModalTitle(LOCATION_ACCURACY);
           setModalVisible(true);
         }}
       />
+
       <ConfigItem
-        title="Frequency"
-        subtitle="Reporting interval in seconds"
+        title={FREQUENCY}
+        subtitle={FREQUENCY_SUB}
         onPress={() => {
-          setModalTitle('Frequency');
+          setModalTitle(FREQUENCY);
           setModalVisible(true);
         }}
       />
+
       <ConfigItem
-        title="Distance"
-        subtitle="Reporting distance in meters"
+        title={DISTANCE}
+        subtitle={DISTANCE_SUB}
         onPress={() => {
-          setModalTitle('Distance');
+          setModalTitle(DISTANCE);
           setModalVisible(true);
         }}
       />
+
       <ConfigItem
-        title="Angle"
-        subtitle="Reporting angle in degrees"
+        title={ANGLE}
+        subtitle={ANGLE_SUB}
         onPress={() => {
-          setModalTitle('Angle');
+          setModalTitle(ANGLE);
           setModalVisible(true);
         }}
       />
+
       <ConfigItem
-        title="Offline buffering"
-        subtitle="Buffering on"
+        title={OFFLINE_BUFFERING}
+        subtitle={OFFLINE_BUFFERING_SUB}
         disabled={true}>
         <CheckBox value={true} />
       </ConfigItem>
-      <ConfigItem title="Wake lock" subtitle="Wake lock on" disabled={true}>
+
+      <ConfigItem title={WAKE_LOCK} subtitle={WAKE_LOCK_SUB} disabled={true}>
         <CheckBox value={true} />
       </ConfigItem>
+
       <ModalInput
         title={modalTitle}
         visible={modalVisible}
