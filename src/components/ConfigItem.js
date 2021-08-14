@@ -7,9 +7,18 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-export default ConfigItem = ({title, subtitle, children, disabled}) => {
+export default ConfigItem = ({
+  title,
+  subtitle,
+  children,
+  disabled,
+  onPress,
+}) => {
   return (
-    <TouchableOpacity style={styles.container} disabled={disabled}>
+    <TouchableOpacity
+      style={styles.container}
+      disabled={disabled}
+      onPress={onPress}>
       <View style={styles.leftItem}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.subtitle}>{subtitle}</Text>
@@ -25,15 +34,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     backgroundColor: '#FAFAFA',
+    marginVertical: 15.5,
   },
   leftItem: {},
   title: {
     fontWeight: '600',
-    fontSize: 15,
+    fontSize: 16,
     color: '#202020',
   },
   subtitle: {
-    fontSize: 13,
+    fontSize: 14,
     color: '#737373',
   },
 });

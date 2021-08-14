@@ -13,6 +13,8 @@ import {
 import CheckBox from '@react-native-community/checkbox';
 import ConfigItem from './ConfigItem';
 
+import ModalInput from './ModalInput';
+
 const {SharedPrefModule, TrackingModule} = NativeModules;
 
 const sharedPrefText = SharedPrefModule.getFromSharedPref('KEY_TEXT');
@@ -20,6 +22,9 @@ const sharedPrefText = SharedPrefModule.getFromSharedPref('KEY_TEXT');
 export default TrackingConfig = () => {
   const [text, setText] = useState('');
   const [frequency, setFrequency] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalText, onTextChange] = useState('');
+  const [modalTitle, setModalTitle] = useState('');
 
   return (
     <View style={styles.container}>
@@ -32,15 +37,51 @@ export default TrackingConfig = () => {
       <ConfigItem
         title="Device Identifier"
         subtitle={Math.floor(Math.random() * 900000) + 100000}
+        onPress={() => {
+          setModalTitle('Device Identifier');
+          setModalVisible(true);
+        }}
       />
-      <ConfigItem title="Server URL" subtitle="Tracking server URL" />
+      <ConfigItem
+        title="Server URL"
+        subtitle="Tracking server URL"
+        onPress={() => {
+          setModalTitle('Server URL');
+          setModalVisible(true);
+        }}
+      />
       <ConfigItem
         title="Location accuracy"
         subtitle="Desired location accuracy"
+        onPress={() => {
+          setModalTitle('Location accuracy');
+          setModalVisible(true);
+        }}
       />
-      <ConfigItem title="Frequency" subtitle="Reporting interval in seconds" />
-      <ConfigItem title="Distance" subtitle="Reporting distance in meters" />
-      <ConfigItem title="Angle" subtitle="Reporting angle in degrees" />
+      <ConfigItem
+        title="Frequency"
+        subtitle="Reporting interval in seconds"
+        onPress={() => {
+          setModalTitle('Frequency');
+          setModalVisible(true);
+        }}
+      />
+      <ConfigItem
+        title="Distance"
+        subtitle="Reporting distance in meters"
+        onPress={() => {
+          setModalTitle('Distance');
+          setModalVisible(true);
+        }}
+      />
+      <ConfigItem
+        title="Angle"
+        subtitle="Reporting angle in degrees"
+        onPress={() => {
+          setModalTitle('Angle');
+          setModalVisible(true);
+        }}
+      />
       <ConfigItem
         title="Offline buffering"
         subtitle="Buffering on"
@@ -50,6 +91,14 @@ export default TrackingConfig = () => {
       <ConfigItem title="Wake lock" subtitle="Wake lock on" disabled={true}>
         <CheckBox value={true} />
       </ConfigItem>
+      <ModalInput
+        title={modalTitle}
+        visible={modalVisible}
+        value={modalText}
+        onTextChange={onTextChange}
+        onCancel={() => setModalVisible(false)}
+        onSubmit={() => setModalVisible(false)}
+      />
     </View>
   );
 };
@@ -60,6 +109,5 @@ const styles = StyleSheet.create({
     paddingStart: 80,
     paddingEnd: 20,
     backgroundColor: '#FAFAFA',
-    justifyContent: 'space-evenly',
   },
 });
