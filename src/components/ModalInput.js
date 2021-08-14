@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import ModalRadioButtons from './ModalRadioButtons';
 
 import ModalTextInput from './ModalTextInput';
 
@@ -15,13 +16,13 @@ export default ModalInput = ({visible, title, onSubmit, onCancel}) => {
     <Modal
       visible={visible}
       transparent={true}
-      style={{justifyContent: 'center'}}
       animationType="fade"
       onRequestClose={() => {}}>
       <View style={styles.containerStyle}>
         <View style={styles.cardStyle}>
           <Text style={styles.titleStyle}>{title}</Text>
-          <ModalTextInput onCancel={onCancel} onSubmit={onSubmit} />
+          {/* <ModalTextInput onCancel={onCancel} onSubmit={onSubmit} /> */}
+          <ModalRadioButtons />
         </View>
       </View>
     </Modal>
@@ -39,12 +40,10 @@ const styles = StyleSheet.create({
     color: '#4E9A52',
   },
   cardStyle: {
-    justifyContent: 'center',
     backgroundColor: 'white',
     marginHorizontal: 25,
     paddingHorizontal: 20,
-    paddingVertical: 10,
-    height: 156,
+    paddingVertical: 22,
   },
   containerStyle: {
     backgroundColor: 'rgba(0,0,0,0.60)',
