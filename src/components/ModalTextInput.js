@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   TextInput,
@@ -7,20 +7,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-export default ModalTextInput = ({
-  onTextChange,
-  visible,
-  value,
-  onSubmit,
-  onCancel,
-  title,
-}) => {
+export default ModalTextInput = ({onSubmit, onCancel}) => {
+  const [text, onChangeText] = useState('');
   return (
     <View>
       <View style={styles.textInputWrapper}>
         <TextInput
-          value={value}
-          onChangeText={onTextChange}
+          value={text}
+          onChangeText={onChangeText}
           placeholder={'Enter text'}
           style={styles.textInput}
         />

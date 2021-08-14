@@ -10,14 +10,7 @@ import {
 
 import ModalTextInput from './ModalTextInput';
 
-export default ModalInput = ({
-  onTextChange,
-  visible,
-  value,
-  onSubmit,
-  onCancel,
-  title,
-}) => {
+export default ModalInput = ({visible, title, onSubmit, onCancel}) => {
   return (
     <Modal
       visible={visible}
@@ -28,12 +21,7 @@ export default ModalInput = ({
       <View style={styles.containerStyle}>
         <View style={styles.cardStyle}>
           <Text style={styles.titleStyle}>{title}</Text>
-          <ModalTextInput
-            value={value}
-            onChangeText={onTextChange}
-            onCancel={onCancel}
-            onSubmit={onSubmit}
-          />
+          <ModalTextInput onCancel={onCancel} onSubmit={onSubmit} />
         </View>
       </View>
     </Modal>

@@ -20,7 +20,6 @@ export default TrackingConfig = () => {
   const [text, setText] = useState('');
   const [frequency, setFrequency] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalText, onTextChange] = useState('');
   const [modalTitle, setModalTitle] = useState('');
 
   const DEVICE_IDENTIFIER = 'Device Identifier';
@@ -117,8 +116,6 @@ export default TrackingConfig = () => {
       <ModalInput
         title={modalTitle}
         visible={modalVisible}
-        value={modalText}
-        onTextChange={onTextChange}
         onCancel={() => setModalVisible(false)}
         onSubmit={() => setModalVisible(false)}
       />
