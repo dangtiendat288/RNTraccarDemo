@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-export default ModalTextInput = ({onSubmit, onCancel}) => {
+export default ModalTextInput = ({onSubmit, onCancel, placeholder}) => {
   const [text, onChangeText] = useState('');
   return (
     <View>
@@ -15,7 +15,7 @@ export default ModalTextInput = ({onSubmit, onCancel}) => {
         <TextInput
           value={text}
           onChangeText={onChangeText}
-          placeholder={'Enter text'}
+          placeholder={placeholder}
           style={styles.textInput}
         />
       </View>
@@ -23,7 +23,7 @@ export default ModalTextInput = ({onSubmit, onCancel}) => {
         <TouchableOpacity onPress={onCancel}>
           <Text style={styles.buttonStyle}>CANCEL</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onSubmit}>
+        <TouchableOpacity onPress={() => onSubmit(text)}>
           <Text style={[styles.buttonStyle, {marginStart: 35, marginEnd: 15}]}>
             OK
           </Text>

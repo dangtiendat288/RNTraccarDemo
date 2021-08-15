@@ -11,7 +11,7 @@ import ModalRadioButtons from './ModalRadioButtons';
 
 import ModalTextInput from './ModalTextInput';
 
-export default ModalInput = ({visible, title, onSubmit, onCancel}) => {
+export default ModalInput = ({visible, title, children}) => {
   return (
     <Modal
       visible={visible}
@@ -21,8 +21,9 @@ export default ModalInput = ({visible, title, onSubmit, onCancel}) => {
       <View style={styles.containerStyle}>
         <View style={styles.cardStyle}>
           <Text style={styles.titleStyle}>{title}</Text>
+          {children}
           {/* <ModalTextInput onCancel={onCancel} onSubmit={onSubmit} /> */}
-          <ModalRadioButtons />
+          {/* <ModalRadioButtons onCancel={onCancel} /> */}
         </View>
       </View>
     </Modal>

@@ -11,33 +11,63 @@ import CheckBox from '@react-native-community/checkbox';
 import ConfigItem from './ConfigItem';
 
 import ModalInput from './ModalInput';
+import ModalRadioButtons from './ModalRadioButtons';
+import ModalTextInput from './ModalTextInput';
 
 const {SharedPrefModule, TrackingModule} = NativeModules;
 
 const sharedPrefText = SharedPrefModule.getFromSharedPref('KEY_TEXT');
 
+const KEY_DEVICE = 'id';
+const KEY_URL = 'url';
+const KEY_INTERVAL = 'interval';
+const KEY_DISTANCE = 'distance';
+const KEY_ANGLE = 'angle';
+const KEY_ACCURACY = 'accuracy';
+const KEY_STATUS = 'status';
+const KEY_BUFFER = 'buffer';
+const KEY_WAKELOCK = 'wakelock';
+
 export default TrackingConfig = () => {
-  const [text, setText] = useState('');
-  const [frequency, setFrequency] = useState('');
+  // const [frequency, setFrequency] = useState('');
+
+  const [key, setKey] = useState(KEY_DEVICE);
+  const [placeholder, setPlaceholder] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
+  const [isText, setIsText] = useState(true);
 
-  const DEVICE_IDENTIFIER = 'Device Identifier';
+  const DEVICE_IDENTIFIER_TITLE = 'Device Identifier';
   const DEVICE_IDENTIFIER_SUB = Math.floor(Math.random() * 900000) + 100000;
-  const SERVER_URL = 'Server URL';
+  const DEVICE_IDENTIFIER = SharedPrefModule.getFromSharedPref(KEY_DEVICE);
+
+  const SERVER_URL_TITLE = 'Server URL';
   const SERVER_URL_SUB = 'Tracking server URL';
-  const LOCATION_ACCURACY = 'Location accuracy';
+  const SERVER_URL = SharedPrefModule.getFromSharedPref(KEY_URL);
+
+  const LOCATION_ACCURACY_TITLE = 'Location accuracy';
   const LOCATION_ACCURACY_SUB = 'Desired location accuracy';
-  const FREQUENCY = 'Frequency';
+  const LOCATION_ACCURACY = SharedPrefModule.getFromSharedPref(KEY_ACCURACY);
+
+  const FREQUENCY_TITLE = 'Frequency';
   const FREQUENCY_SUB = 'Reporting interval in seconds';
-  const DISTANCE = 'Distance';
+  const FREQUENCY = SharedPrefModule.getFromSharedPref(KEY_INTERVAL);
+
+  const DISTANCE_TITLE = 'Distance';
   const DISTANCE_SUB = 'Reporting distance in meters';
-  const ANGLE = 'Angle';
+  const DISTANCE = SharedPrefModule.getFromSharedPref(KEY_DISTANCE);
+
+  const ANGLE_TITLE = 'Angle';
   const ANGLE_SUB = 'Reporting angle in degrees';
-  const OFFLINE_BUFFERING = 'Offline buffering';
+  const ANGLE = SharedPrefModule.getFromSharedPref(KEY_ANGLE);
+
+  const OFFLINE_BUFFERING_TITLE = 'Offline buffering';
   const OFFLINE_BUFFERING_SUB = 'Buffering on';
-  const WAKE_LOCK = 'Wake lock';
+  const OFFLINE_BUFFERING = SharedPrefModule.getFromSharedPref(KEY_BUFFER);
+
+  const WAKE_LOCK_TITLE = 'Wake lock';
   const WAKE_LOCK_SUB = 'Wake lock on';
+  const WAKE_LOCK = SharedPrefModule.getFromSharedPref(KEY_WAKELOCK);
 
   return (
     <View style={styles.container}>
@@ -49,76 +79,110 @@ export default TrackingConfig = () => {
       </ConfigItem>
 
       <ConfigItem
-        title={DEVICE_IDENTIFIER}
-        subtitle={DEVICE_IDENTIFIER_SUB}
+        title={DEVICE_IDENTIFIER_TITLE}
+        subtitle={
+          DEVICE_IDENTIFIER != null ? DEVICE_IDENTIFIER : DEVICE_IDENTIFIER_SUB
+        }
         onPress={() => {
-          setModalTitle(DEVICE_IDENTIFIER);
+          setPlaceholder(DEVICE_IDENTIFIER);
+          setKey(KEY_DEVICE);
+          setIsText(true);
+          setModalTitle(DEVICE_IDENTIFIER_TITLE);
           setModalVisible(true);
         }}
       />
 
       <ConfigItem
-        title={SERVER_URL}
+        title={SERVER_URL_TITLE}
         subtitle={SERVER_URL_SUB}
         onPress={() => {
-          setModalTitle(SERVER_URL);
+          setPlaceholder(SERVER_URL);
+          setKey(KEY_URL);
+          setIsText(true);
+          setModalTitle(SERVER_URL_TITLE);
           setModalVisible(true);
         }}
       />
 
       <ConfigItem
-        title={LOCATION_ACCURACY}
+        title={LOCATION_ACCURACY_TITLE}
         subtitle={LOCATION_ACCURACY_SUB}
         onPress={() => {
-          setModalTitle(LOCATION_ACCURACY);
+          setPlaceholder(LOCATION_ACCURACY);
+          setKey(KEY_ACCURACY);
+          setIsText(false);
+          setModalTitle(LOCATION_ACCURACY_TITLE);
           setModalVisible(true);
         }}
       />
 
       <ConfigItem
-        title={FREQUENCY}
+        title={FREQUENCY_TITLE}
         subtitle={FREQUENCY_SUB}
         onPress={() => {
-          setModalTitle(FREQUENCY);
+          setPlaceholder(FREQUENCY);
+          setKey(KEY_INTERVAL);
+          setIsText(true);
+          setModalTitle(FREQUENCY_TITLE);
           setModalVisible(true);
         }}
       />
 
       <ConfigItem
-        title={DISTANCE}
+        title={DISTANCE_TITLE}
         subtitle={DISTANCE_SUB}
         onPress={() => {
-          setModalTitle(DISTANCE);
+          setPlaceholder(DISTANCE);
+          setKey(KEY_DISTANCE);
+          setIsText(true);
+          setModalTitle(DISTANCE_TITLE);
           setModalVisible(true);
         }}
       />
 
       <ConfigItem
-        title={ANGLE}
+        title={ANGLE_TITLE}
         subtitle={ANGLE_SUB}
         onPress={() => {
-          setModalTitle(ANGLE);
+          setPlaceholder(ANGLE);
+          setKey(KEY_ANGLE);
+          setIsText(true);
+          setModalTitle(ANGLE_TITLE);
           setModalVisible(true);
         }}
       />
 
       <ConfigItem
-        title={OFFLINE_BUFFERING}
+        title={OFFLINE_BUFFERING_TITLE}
         subtitle={OFFLINE_BUFFERING_SUB}
         disabled={true}>
         <CheckBox value={true} />
       </ConfigItem>
 
-      <ConfigItem title={WAKE_LOCK} subtitle={WAKE_LOCK_SUB} disabled={true}>
+      <ConfigItem
+        title={WAKE_LOCK_TITLE}
+        subtitle={WAKE_LOCK_SUB}
+        disabled={true}>
         <CheckBox value={true} />
       </ConfigItem>
 
-      <ModalInput
-        title={modalTitle}
-        visible={modalVisible}
-        onCancel={() => setModalVisible(false)}
-        onSubmit={() => setModalVisible(false)}
-      />
+      <ModalInput title={modalTitle} visible={modalVisible}>
+        {isText ? (
+          <ModalTextInput
+            placeholder={placeholder}
+            onSubmit={string => {
+              SharedPrefModule.saveToSharedPref(key, string);
+              setModalVisible(false);
+            }}
+            onCancel={() => setModalVisible(false)}
+          />
+        ) : (
+          <ModalRadioButtons
+            onSubmit={id => setModalVisible(false)}
+            onCancel={() => setModalVisible(false)}
+          />
+        )}
+      </ModalInput>
     </View>
   );
 };
