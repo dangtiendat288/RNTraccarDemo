@@ -36,14 +36,28 @@ export default TrackingConfig = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [isText, setIsText] = useState(true);
+  const [isEnabled, setIsEnabled] = useState(false);
+  const [serviceSub, setServiceSub] = useState('Services stopped');
+
+  const toggleSwitch = () => {
+    setIsEnabled(previousState => !previousState);
+    console.log(isEnabled);
+    if (isEnabled) {
+      TrackingModule.stopService();
+      setServiceSub('Services stopped');
+    } else {
+      TrackingModule.startService();
+      setServiceSub('Services started');
+    }
+  };
 
   const DEVICE_IDENTIFIER_TITLE = 'Device Identifier';
   let DEVICE_IDENTIFIER = SharedPrefModule.getFromSharedPref(KEY_DEVICE);
 
   if (DEVICE_IDENTIFIER == '') {
     const id = Math.floor(Math.random() * 900000) + 100000;
-    DEVICE_IDENTIFIER = id;
-    SharedPrefModule.saveToSharedPref(KEY_DEVICE, id.toString());
+    DEVICE_IDENTIFIER = id.toString();
+    SharedPrefModule.saveToSharedPref(KEY_DEVICE, DEVICE_IDENTIFIER);
   }
 
   let SERVER_URL = SharedPrefModule.getFromSharedPref(KEY_URL);
@@ -56,7 +70,6 @@ export default TrackingConfig = () => {
 
   const SERVER_URL_TITLE = 'Server URL';
   const SERVER_URL_SUB = 'Tracking server URL';
-  // const SERVER_URL = SharedPrefModule.getFromSharedPref(KEY_URL);
 
   const LOCATION_ACCURACY_TITLE = 'Location accuracy';
   const LOCATION_ACCURACY_SUB = 'Desired location accuracy';
@@ -82,13 +95,12 @@ export default TrackingConfig = () => {
   const WAKE_LOCK_SUB = 'Wake lock on';
   const WAKE_LOCK = SharedPrefModule.getFromSharedPref(KEY_WAKELOCK);
 
+  const SERVICE_TITLE = 'Service status';
+
   return (
     <View style={styles.container}>
-      <ConfigItem
-        title="Service status"
-        subtitle="Services stopped"
-        disabled={true}>
-        <Switch />
+      <ConfigItem title={SERVICE_TITLE} subtitle={serviceSub} disabled={true}>
+        <Switch value={isEnabled} onValueChange={toggleSwitch} />
       </ConfigItem>
 
       <ConfigItem
