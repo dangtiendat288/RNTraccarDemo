@@ -34,13 +34,13 @@ public class SharedPrefModule extends ReactContextBaseJavaModule {
     public String getFromSharedPref(String key) {
         String text = "";
         if (mSharedPreference.contains(key)) {
-            text = mSharedPreference.getString(key, "Nothing");
-            Log.d("ABC", "Text: " + text);
+            text = mSharedPreference.getString(key, "");
         }
+        Log.d("ABC", "Text: " + text);
         return text;
     }
 
-    ;
+
 
     @ReactMethod
     public void saveToSharedPref(String key,String id) {

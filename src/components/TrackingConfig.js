@@ -38,12 +38,25 @@ export default TrackingConfig = () => {
   const [isText, setIsText] = useState(true);
 
   const DEVICE_IDENTIFIER_TITLE = 'Device Identifier';
-  const DEVICE_IDENTIFIER_SUB = Math.floor(Math.random() * 900000) + 100000;
-  const DEVICE_IDENTIFIER = SharedPrefModule.getFromSharedPref(KEY_DEVICE);
+  let DEVICE_IDENTIFIER = SharedPrefModule.getFromSharedPref(KEY_DEVICE);
+
+  if (DEVICE_IDENTIFIER == '') {
+    const id = Math.floor(Math.random() * 900000) + 100000;
+    DEVICE_IDENTIFIER = id;
+    SharedPrefModule.saveToSharedPref(KEY_DEVICE, id.toString());
+  }
+
+  let SERVER_URL = SharedPrefModule.getFromSharedPref(KEY_URL);
+
+  if (SERVER_URL == '') {
+    const URL = 'http://localhost:5055';
+    SERVER_URL = URL;
+    SharedPrefModule.saveToSharedPref(KEY_URL, URL);
+  }
 
   const SERVER_URL_TITLE = 'Server URL';
   const SERVER_URL_SUB = 'Tracking server URL';
-  const SERVER_URL = SharedPrefModule.getFromSharedPref(KEY_URL);
+  // const SERVER_URL = SharedPrefModule.getFromSharedPref(KEY_URL);
 
   const LOCATION_ACCURACY_TITLE = 'Location accuracy';
   const LOCATION_ACCURACY_SUB = 'Desired location accuracy';
@@ -81,7 +94,8 @@ export default TrackingConfig = () => {
       <ConfigItem
         title={DEVICE_IDENTIFIER_TITLE}
         subtitle={
-          DEVICE_IDENTIFIER != null ? DEVICE_IDENTIFIER : DEVICE_IDENTIFIER_SUB
+          DEVICE_IDENTIFIER
+          // DEVICE_IDENTIFIER != null ? DEVICE_IDENTIFIER : DEVICE_IDENTIFIER_SUB
         }
         onPress={() => {
           setPlaceholder(DEVICE_IDENTIFIER);
