@@ -90,7 +90,9 @@ export default TrackingConfig = () => {
 
   const DISTANCE_TITLE = 'Distance';
   const DISTANCE_SUB = 'Reporting distance in meters';
-  const DISTANCE = SharedPrefModule.getFromSharedPref(KEY_DISTANCE);
+  const [distance, setDistance] = useState(
+    SharedPrefModule.getFromSharedPref(KEY_DISTANCE),
+  );
 
   const ANGLE_TITLE = 'Angle';
   const ANGLE_SUB = 'Reporting angle in degrees';
@@ -119,9 +121,9 @@ export default TrackingConfig = () => {
       case KEY_INTERVAL:
         setFrequency(string);
         break;
-      // case KEY_DEVICE:
-      //   setDeviceIdentifier(string);
-      //   break;
+      case KEY_DISTANCE:
+        setDistance(string);
+        break;
       // case KEY_DEVICE:
       //   setDeviceIdentifier(string);
       //   break;
@@ -194,7 +196,7 @@ export default TrackingConfig = () => {
         title={DISTANCE_TITLE}
         subtitle={DISTANCE_SUB}
         onPress={() => {
-          setPlaceholder(DISTANCE);
+          setPlaceholder(distance);
           setKey(KEY_DISTANCE);
           setIsText(true);
           setModalTitle(DISTANCE_TITLE);
