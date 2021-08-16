@@ -22,6 +22,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 
 //import com.rntraccardemo.MainFragment;
 import com.rntraccardemo.Models.Position;
@@ -97,6 +98,7 @@ public class AndroidPositionProvider extends PositionProvider implements Locatio
     @Override
     public void onLocationChanged(Location location) {
         processLocation(location);
+        Log.d("LCT",String.valueOf(location));
     }
 
     @Override

@@ -84,7 +84,9 @@ export default TrackingConfig = () => {
 
   const FREQUENCY_TITLE = 'Frequency';
   const FREQUENCY_SUB = 'Reporting interval in seconds';
-  const FREQUENCY = SharedPrefModule.getFromSharedPref(KEY_INTERVAL);
+  const [frequency, setFrequency] = useState(
+    SharedPrefModule.getFromSharedPref(KEY_INTERVAL),
+  );
 
   const DISTANCE_TITLE = 'Distance';
   const DISTANCE_SUB = 'Reporting distance in meters';
@@ -114,9 +116,9 @@ export default TrackingConfig = () => {
       // case KEY_DEVICE:
       //   setDeviceIdentifier(string);
       //   break;
-      // case KEY_DEVICE:
-      //   setDeviceIdentifier(string);
-      //   break;
+      case KEY_INTERVAL:
+        setFrequency(string);
+        break;
       // case KEY_DEVICE:
       //   setDeviceIdentifier(string);
       //   break;
@@ -180,7 +182,7 @@ export default TrackingConfig = () => {
         title={FREQUENCY_TITLE}
         subtitle={FREQUENCY_SUB}
         onPress={() => {
-          setPlaceholder(FREQUENCY);
+          setPlaceholder(frequency);
           setKey(KEY_INTERVAL);
           setIsText(true);
           setModalTitle(FREQUENCY_TITLE);
