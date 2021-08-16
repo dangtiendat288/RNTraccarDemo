@@ -96,7 +96,9 @@ export default TrackingConfig = () => {
 
   const ANGLE_TITLE = 'Angle';
   const ANGLE_SUB = 'Reporting angle in degrees';
-  const ANGLE = SharedPrefModule.getFromSharedPref(KEY_ANGLE);
+  const [angle, setAngle] = useState(
+    SharedPrefModule.getFromSharedPref(KEY_ANGLE),
+  );
 
   const OFFLINE_BUFFERING_TITLE = 'Offline buffering';
   const OFFLINE_BUFFERING_SUB = 'Buffering on';
@@ -124,9 +126,9 @@ export default TrackingConfig = () => {
       case KEY_DISTANCE:
         setDistance(string);
         break;
-      // case KEY_DEVICE:
-      //   setDeviceIdentifier(string);
-      //   break;
+      case KEY_ANGLE:
+        setAngle(string);
+        break;
       // case KEY_DEVICE:
       //   setDeviceIdentifier(string);
       //   break;
@@ -208,7 +210,7 @@ export default TrackingConfig = () => {
         title={ANGLE_TITLE}
         subtitle={ANGLE_SUB}
         onPress={() => {
-          setPlaceholder(ANGLE);
+          setPlaceholder(angle);
           setKey(KEY_ANGLE);
           setIsText(true);
           setModalTitle(ANGLE_TITLE);
