@@ -36,7 +36,7 @@ public class SharedPrefModule extends ReactContextBaseJavaModule {
         if (mSharedPreference.contains(key)) {
             text = mSharedPreference.getString(key, "");
         }
-        Log.d("ABC", "Text: " + text);
+        Log.d("ABC", "Key: " + key +  " Data: " + text);
         return text;
     }
 
@@ -44,10 +44,8 @@ public class SharedPrefModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void saveToSharedPref(String key,String id) {
-//        if (!mSharedPreference.contains(KEY_TEXT)) {
             mSharedPreference.edit().putString(key, id).apply();
-            Log.d("ABC", id+ " has been added to SharedPref successfully");
-//        }
+            Log.d("ABC", id+ " has been added to key "+ key + " in SharedPref successfully");
     }
 
 }

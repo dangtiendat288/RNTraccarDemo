@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -15,8 +15,6 @@ import ModalRadioButtons from './ModalRadioButtons';
 import ModalTextInput from './ModalTextInput';
 
 const {SharedPrefModule, TrackingModule} = NativeModules;
-
-const sharedPrefText = SharedPrefModule.getFromSharedPref('KEY_TEXT');
 
 const KEY_DEVICE = 'id';
 const KEY_URL = 'url';
@@ -37,36 +35,45 @@ export default TrackingConfig = () => {
   const [modalTitle, setModalTitle] = useState('');
   const [isText, setIsText] = useState(true);
   const [isEnabled, setIsEnabled] = useState(false);
+
+  const SERVICE_TITLE = 'Service status';
   const [serviceSub, setServiceSub] = useState('Services stopped');
 
-  const toggleSwitch = () => {
-    setIsEnabled(previousState => !previousState);
-    console.log(isEnabled);
-    if (isEnabled) {
+  const [deviceIdentifier, setDeviceIdentifier] = useState(
+    SharedPrefModule.getFromSharedPref(KEY_DEVICE),
+  );
+
+  if (deviceIdentifier == '') {
+    const id = Math.floor(Math.random() * 900000) + 100000;
+    setDeviceIdentifier(id.toString());
+    SharedPrefModule.saveToSharedPref(KEY_DEVICE, id.toString());
+  }
+
+  const [serverURL, setServerURL] = useState(
+    SharedPrefModule.getFromSharedPref(KEY_URL),
+  );
+
+  if (serverURL == '') {
+    const URL = 'http://localhost:5055';
+    setServerURL(URL);
+    SharedPrefModule.saveToSharedPref(KEY_URL, URL);
+  }
+
+  useEffect(() => {
+    if (!isEnabled) {
       TrackingModule.stopService();
       setServiceSub('Services stopped');
     } else {
       TrackingModule.startService();
       setServiceSub('Services started');
     }
+  }, [isEnabled]);
+
+  const toggleSwitch = () => {
+    setIsEnabled(previousState => !previousState);
   };
 
   const DEVICE_IDENTIFIER_TITLE = 'Device Identifier';
-  let DEVICE_IDENTIFIER = SharedPrefModule.getFromSharedPref(KEY_DEVICE);
-
-  if (DEVICE_IDENTIFIER == '') {
-    const id = Math.floor(Math.random() * 900000) + 100000;
-    DEVICE_IDENTIFIER = id.toString();
-    SharedPrefModule.saveToSharedPref(KEY_DEVICE, DEVICE_IDENTIFIER);
-  }
-
-  let SERVER_URL = SharedPrefModule.getFromSharedPref(KEY_URL);
-
-  if (SERVER_URL == '') {
-    const URL = 'http://localhost:5055';
-    SERVER_URL = URL;
-    SharedPrefModule.saveToSharedPref(KEY_URL, URL);
-  }
 
   const SERVER_URL_TITLE = 'Server URL';
   const SERVER_URL_SUB = 'Tracking server URL';
@@ -95,7 +102,37 @@ export default TrackingConfig = () => {
   const WAKE_LOCK_SUB = 'Wake lock on';
   const WAKE_LOCK = SharedPrefModule.getFromSharedPref(KEY_WAKELOCK);
 
-  const SERVICE_TITLE = 'Service status';
+  const onSubmit = string => {
+    SharedPrefModule.saveToSharedPref(key, string);
+    switch (key) {
+      case KEY_DEVICE:
+        setDeviceIdentifier(string);
+        break;
+      case KEY_URL:
+        setServerURL(string);
+        break;
+      // case KEY_DEVICE:
+      //   setDeviceIdentifier(string);
+      //   break;
+      // case KEY_DEVICE:
+      //   setDeviceIdentifier(string);
+      //   break;
+      // case KEY_DEVICE:
+      //   setDeviceIdentifier(string);
+      //   break;
+      // case KEY_DEVICE:
+      //   setDeviceIdentifier(string);
+      //   break;
+      // case KEY_DEVICE:
+      //   setDeviceIdentifier(string);
+      //   break;
+      // case KEY_DEVICE:
+      //   setDeviceIdentifier(string);
+      //   break;
+      default:
+    }
+    setModalVisible(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -105,12 +142,9 @@ export default TrackingConfig = () => {
 
       <ConfigItem
         title={DEVICE_IDENTIFIER_TITLE}
-        subtitle={
-          DEVICE_IDENTIFIER
-          // DEVICE_IDENTIFIER != null ? DEVICE_IDENTIFIER : DEVICE_IDENTIFIER_SUB
-        }
+        subtitle={deviceIdentifier}
         onPress={() => {
-          setPlaceholder(DEVICE_IDENTIFIER);
+          setPlaceholder(deviceIdentifier);
           setKey(KEY_DEVICE);
           setIsText(true);
           setModalTitle(DEVICE_IDENTIFIER_TITLE);
@@ -122,7 +156,7 @@ export default TrackingConfig = () => {
         title={SERVER_URL_TITLE}
         subtitle={SERVER_URL_SUB}
         onPress={() => {
-          setPlaceholder(SERVER_URL);
+          setPlaceholder(serverURL);
           setKey(KEY_URL);
           setIsText(true);
           setModalTitle(SERVER_URL_TITLE);
@@ -196,10 +230,7 @@ export default TrackingConfig = () => {
         {isText ? (
           <ModalTextInput
             placeholder={placeholder}
-            onSubmit={string => {
-              SharedPrefModule.saveToSharedPref(key, string);
-              setModalVisible(false);
-            }}
+            onSubmit={onSubmit}
             onCancel={() => setModalVisible(false)}
           />
         ) : (

@@ -1,7 +1,12 @@
 package com.rntraccardemo;
 
+import android.annotation.TargetApi;
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -13,6 +18,17 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
     public static final String PRIMARY_CHANNEL = "default";
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private void registerChannel() {
+        NotificationChannel channel = new NotificationChannel(
+                PRIMARY_CHANNEL, getString(R.string.channel_default), NotificationManager.IMPORTANCE_LOW
+        );
+//        channel.lightColor = Color.GREEN
+//        channel.lockscreenVisibility = Notification.VISIBILITY_SECRET
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+    }
 
 
 
@@ -47,6 +63,9 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+          registerChannel();
+      }
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
