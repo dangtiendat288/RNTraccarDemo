@@ -6,26 +6,24 @@ const radioButtonsData = [
   {
     id: '1',
     label: 'High',
-    value: 'High',
+    value: 'high',
   },
   {
     id: '2',
     label: 'Medium',
-    value: 'Medium',
+    value: 'medium',
+    selected: true,
   },
   {
     id: '3',
     label: 'Low',
-    value: 'Low',
+    value: 'low',
   },
 ];
 
 export default ModalRadioButtons = ({onSubmit, onCancel}) => {
   const [radioButtons, setRadioButtons] = useState(radioButtonsData);
 
-  //   const onPressRadioButton = radioButtonsArray => {
-  //     setRadioButtons(radioButtonsArray);
-  //     };
   const onPressRadioButton = id => {
     console.log(id);
     for (const button of radioButtons) {
@@ -35,7 +33,6 @@ export default ModalRadioButtons = ({onSubmit, onCancel}) => {
     setRadioButtons([...radioButtons]);
 
     onSubmit(id);
-    // setRadioButtons(radioButtonsArray);
   };
 
   return (

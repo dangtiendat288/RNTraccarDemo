@@ -108,7 +108,24 @@ export default TrackingConfig = () => {
   const WAKE_LOCK_SUB = 'Wake lock on';
   const WAKE_LOCK = SharedPrefModule.getFromSharedPref(KEY_WAKELOCK);
 
-  const onSubmit = string => {
+  const onRadioSubmit = accuracyId => {
+    let accuracy = '';
+    switch (accuracyId) {
+      case '1':
+        accuracy = 'high';
+        break;
+      case '2':
+        accuracy = 'medium';
+        break;
+      default:
+        accuracy = 'low';
+    }
+    // console.log(`Accuracy Id: ${accuracyId}, accuracy: ${accuracy}`);
+    SharedPrefModule.saveToSharedPref(KEY_ACCURACY, accuracy);
+    setModalVisible(false);
+  };
+
+  const onTextSubmit = string => {
     SharedPrefModule.saveToSharedPref(key, string);
     switch (key) {
       case KEY_DEVICE:
@@ -236,12 +253,12 @@ export default TrackingConfig = () => {
         {isText ? (
           <ModalTextInput
             placeholder={placeholder}
-            onSubmit={onSubmit}
+            onSubmit={onTextSubmit}
             onCancel={() => setModalVisible(false)}
           />
         ) : (
           <ModalRadioButtons
-            onSubmit={id => setModalVisible(false)}
+            onSubmit={onRadioSubmit}
             onCancel={() => setModalVisible(false)}
           />
         )}
