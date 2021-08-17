@@ -36,16 +36,31 @@ public class SharedPrefModule extends ReactContextBaseJavaModule {
         if (mSharedPreference.contains(key)) {
             text = mSharedPreference.getString(key, "");
         }
-        Log.d("ABC", "Key: " + key +  " Data: " + text);
+        Log.d("ABC", "Key: " + key + " Data: " + text);
         return text;
     }
 
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public boolean getBooleanFromSharedPref(String key) {
+        boolean data = true;
+        if (mSharedPreference.contains(key)) {
+            data = mSharedPreference.getBoolean(key, false);
+        }
+        Log.d("ABC", "Key: " + key + " Data: " + data);
+        return data;
+    }
 
 
     @ReactMethod
-    public void saveToSharedPref(String key,String id) {
-            mSharedPreference.edit().putString(key, id).apply();
-            Log.d("ABC", id+ " has been added to key "+ key + " in SharedPref successfully");
+    public void saveToSharedPref(String key, String id) {
+        mSharedPreference.edit().putString(key, id).apply();
+        Log.d("ABC", id + " has been added to key " + key + " in SharedPref successfully");
+    }
+
+    @ReactMethod
+    public void saveBooleanToSharedPref(String key, boolean data) {
+        mSharedPreference.edit().putBoolean(key, data).apply();
+        Log.d("ABC", data + " has been added to key " + key + " in SharedPref successfully");
     }
 
 }

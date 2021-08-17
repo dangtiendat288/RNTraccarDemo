@@ -102,11 +102,15 @@ export default TrackingConfig = () => {
 
   const OFFLINE_BUFFERING_TITLE = 'Offline buffering';
   const OFFLINE_BUFFERING_SUB = 'Buffering on';
-  const OFFLINE_BUFFERING = SharedPrefModule.getFromSharedPref(KEY_BUFFER);
+  const [offlineBuffering, setBuffer] = useState(
+    SharedPrefModule.getBooleanFromSharedPref(KEY_BUFFER),
+  );
 
   const WAKE_LOCK_TITLE = 'Wake lock';
   const WAKE_LOCK_SUB = 'Wake lock on';
-  const WAKE_LOCK = SharedPrefModule.getFromSharedPref(KEY_WAKELOCK);
+  const [wakeLock, setWakeLock] = useState(
+    SharedPrefModule.getBooleanFromSharedPref(KEY_WAKELOCK),
+  );
 
   const onRadioSubmit = accuracyId => {
     let accuracy = '';
@@ -120,7 +124,6 @@ export default TrackingConfig = () => {
       default:
         accuracy = 'low';
     }
-    // console.log(`Accuracy Id: ${accuracyId}, accuracy: ${accuracy}`);
     SharedPrefModule.saveToSharedPref(KEY_ACCURACY, accuracy);
     setModalVisible(false);
   };
@@ -241,14 +244,26 @@ export default TrackingConfig = () => {
         title={OFFLINE_BUFFERING_TITLE}
         subtitle={OFFLINE_BUFFERING_SUB}
         disabled={true}>
-        <CheckBox value={true} />
+        <CheckBox
+          value={offlineBuffering}
+          onValueChange={newValue => {
+            setBuffer(newValue);
+            SharedPrefModule.saveBooleanToSharedPref(KEY_BUFFER, newValue);
+          }}
+        />
       </ConfigItem>
 
       <ConfigItem
         title={WAKE_LOCK_TITLE}
         subtitle={WAKE_LOCK_SUB}
         disabled={true}>
-        <CheckBox value={true} />
+        <CheckBox
+          value={wakeLock}
+          onValueChange={newValue => {
+            setWakeLock(newValue);
+            SharedPrefModule.saveBooleanToSharedPref(KEY_WAKELOCK, newValue);
+          }}
+        />
       </ConfigItem>
 
       <ModalInput title={modalTitle} visible={modalVisible}>

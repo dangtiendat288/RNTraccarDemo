@@ -19,10 +19,6 @@ const Stack = createNativeStackNavigator();
 
 const {SharedPrefModule, TrackingModule} = NativeModules;
 
-const sharedPrefText = SharedPrefModule.getFromSharedPref('KEY_TEXT');
-
-// console.log(`Device ID: ${sharedPrefText}`);
-
 export default App = () => {
   return (
     <NavigationContainer>
