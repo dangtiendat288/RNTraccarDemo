@@ -126,33 +126,35 @@ export default TrackingConfig = () => {
   };
 
   const onTextSubmit = string => {
-    SharedPrefModule.saveToSharedPref(key, string);
-    switch (key) {
-      case KEY_DEVICE:
-        setDeviceIdentifier(string);
-        break;
-      case KEY_URL:
-        setServerURL(string);
-        break;
-      // case KEY_DEVICE:
-      //   setDeviceIdentifier(string);
-      //   break;
-      case KEY_INTERVAL:
-        setFrequency(string);
-        break;
-      case KEY_DISTANCE:
-        setDistance(string);
-        break;
-      case KEY_ANGLE:
-        setAngle(string);
-        break;
-      // case KEY_DEVICE:
-      //   setDeviceIdentifier(string);
-      //   break;
-      // case KEY_DEVICE:
-      //   setDeviceIdentifier(string);
-      //   break;
-      default:
+    if (string !== '') {
+      SharedPrefModule.saveToSharedPref(key, string);
+      switch (key) {
+        case KEY_DEVICE:
+          setDeviceIdentifier(string);
+          break;
+        case KEY_URL:
+          setServerURL(string);
+          break;
+        // case KEY_DEVICE:
+        //   setDeviceIdentifier(string);
+        //   break;
+        case KEY_INTERVAL:
+          setFrequency(string);
+          break;
+        case KEY_DISTANCE:
+          setDistance(string);
+          break;
+        case KEY_ANGLE:
+          setAngle(string);
+          break;
+        // case KEY_DEVICE:
+        //   setDeviceIdentifier(string);
+        //   break;
+        // case KEY_DEVICE:
+        //   setDeviceIdentifier(string);
+        //   break;
+        default:
+      }
     }
     setModalVisible(false);
   };
